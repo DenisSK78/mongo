@@ -3,17 +3,21 @@ package com.example.mongo.data;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.time.Instant;
+
 @Document
 public class Employee {
     @Id
     private String id;
     private String name;
     private String profession;
+    private Long date;
 
     public Employee(String id, String name, String profession) {
         this.id = id;
         this.name = name;
-        this.profession = profession;
+        this.profession = profession != null || profession.isEmpty() ? "profession" : profession;
+        this.date = Instant.now().getEpochSecond();
     }
 
     public Employee() {
@@ -42,4 +46,13 @@ public class Employee {
     public void setProfession(String profession) {
         this.profession = profession;
     }
+
+    public Long getDate() {
+        return date;
+    }
+
+    public void setDate(Long date) {
+        this.date = date;
+    }
+
 }
