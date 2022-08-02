@@ -1,26 +1,48 @@
 package com.example.mongo.data;
 
+import com.example.mongo.data.work.DocumentProperties;
+import lombok.ToString;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.time.Instant;
+import java.time.LocalDateTime;
+import java.util.Random;
 
 @Document
+@ToString
 public class Employee {
     @Id
     private String id;
-    private String name;
+    private String name = getRandomNumberUsingNextInt(100000, 999999);
     private String profession;
-    private Long date;
+
+    private LocalDateTime createdDateTime;
+
+    private Long createdUnix = Instant.now().getEpochSecond();
+
+    private DocumentProperties documentProperties;
 
     public Employee(String id, String name, String profession) {
         this.id = id;
-        this.name = name;
-        this.profession = profession != null || profession.isEmpty() ? "profession" : profession;
-        this.date = Instant.now().getEpochSecond();
+        this.profession = profession;
+    }
+
+    public String getRandomNumberUsingNextInt(int min, int max) {
+        Random random = new Random();
+        int i = random.nextInt(max - min) + min;
+        return String.valueOf(i);
     }
 
     public Employee() {
+    }
+
+    public DocumentProperties getDocumentProperties() {
+        return documentProperties;
+    }
+
+    public void setDocumentProperties(DocumentProperties documentProperties) {
+        this.documentProperties = documentProperties;
     }
 
     public String getId() {
@@ -47,12 +69,19 @@ public class Employee {
         this.profession = profession;
     }
 
-    public Long getDate() {
-        return date;
+    public LocalDateTime getCreatedDateTime() {
+        return createdDateTime;
     }
 
-    public void setDate(Long date) {
-        this.date = date;
+    public void setCreatedDateTime(LocalDateTime createdDateTime) {
+        this.createdDateTime = createdDateTime;
     }
 
+    public Long getCreatedUnix() {
+        return createdUnix;
+    }
+
+    public void setCreatedUnix(Long createdUnix) {
+        this.createdUnix = createdUnix;
+    }
 }
